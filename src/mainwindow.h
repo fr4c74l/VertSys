@@ -42,6 +42,7 @@ public slots:
     void recvClimberInfo(Climber *&climber);
     void updateActivateOption(int idx);
     void displayClimberInfo(int, Climber*);
+    void setPaymentNewClimber(Climber *&c);
 
 signals:
     void updateFilter(QString str);
@@ -50,9 +51,10 @@ signals:
     void removeClimber();
     void toggleActivity();
     void updateClimberInfo();
-    void updateClimberInfo(Climber *&climber);
+    void updateClimberInfo(Climber *&climber, bool isNew);
     void restart();
     void exportEmails();
+    void getClimberByEmail(QString);
 
 private:
     Ui::MainWindow *ui;

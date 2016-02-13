@@ -17,7 +17,7 @@ class PaymentWindow : public QDialog
     Q_OBJECT
 
 public slots:
-    void updateClimberInfo(Climber *&climber);
+    void updateClimberInfo(Climber *&climber, bool isNewClimber);
 
 public:
     explicit PaymentWindow(QWidget *parent = 0);
@@ -30,9 +30,12 @@ private slots:
 
 signals:
     void setPayment(QDate date, double value);
+    void setPaymentByEmail(QDate date, double value, QString email);
 
 private:
     Ui::Payment *ui;
     QString name;
+    QString email;
+    bool isNew;
     QDate expirationDate;
 };

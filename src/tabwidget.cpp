@@ -22,6 +22,9 @@ TabWidget::TabWidget(QWidget *parent) :
 
     connect(this, SIGNAL(updateActivateOption(int)),
             static_cast<QMainWindow*>(parent->parent()), SLOT(updateActivateOption(int)), Qt::UniqueConnection);
+
+    connect(this, SIGNAL(setPaymentNewClimber(Climber *&)),
+            static_cast<QMainWindow*>(parent->parent()), SLOT(setPaymentNewClimber(Climber *&)), Qt::UniqueConnection);
 }
 
 void TabWidget::setupModel()
@@ -95,8 +98,11 @@ void TabWidget::insertClimberInDB(Climber *&climber)
     qDebug() << "INSERTED: " << climber->getName();
     bool ret = climberModel->insertClimber(climber);
     if(ret)
+    {
         updateIdx();
-    else
+        //show payment window
+        emit setPaymentNewClimber(climber);
+    } else
         qDebug() << climberModel->lastError().text();
 }
 
@@ -161,6 +167,31 @@ void TabWidget::setPayment(QDate expirationDate, double value)
 {
     int row = selectedRow();
     Climber *c = climberModel->getClimber(row);
+    showSetPayment(expirationDate, value, c, row);
+}
+
+void TabWidget::setPaymentByEmail(QDate expirationDate, double value, QString email)
+{
+    Climber *c = getClimberByEmail(email);
+    QTableView *temp = static_cast<QTableView*>(currentWidget());
+    QSortFilterProxyModel *proxy = static_cast<QSortFilterProxyModel*>(temp->model());
+    int rows = proxy->rowCount();
+    int r = -1;
+    for(int row = 0;row < rows;row++)
+    {
+        QModelIndex idx = proxy->index(row, VertSys::email);
+        QString e = proxy->data(idx, Qt::DisplayRole).toString();
+        if (e == email)
+        {
+            r = proxyTextModel->mapToSource(proxy->mapToSource(idx)).row();
+            break;
+        }
+    }
+    showSetPayment(expirationDate, value, c, r);
+}
+
+void TabWidget::showSetPayment(QDate expirationDate, double value, Climber *&c, int row)
+{
     Payment payment(c->getEmail(), QDate::currentDate(), expirationDate, value);
     if (climberModel->updateExpirationDate(row, expirationDate) && paymentModel->insertPayment(payment))
     {
@@ -198,5 +229,28 @@ void TabWidget::exportClimbersEmails()
             strList << climberModel->index(r, VertSys::email).data().toString();
         data << strList.join("\n");
         file.close();
+    }
+}
+
+Climber* TabWidget::getClimberByEmail(QString email)
+{
+    QSqlQuery query;
+    query.exec(QString("SELECT * FROM climber WHERE email = \"%1\";").arg(email));
+    while (query.next())
+    {
+        QString name, phone, address, email, status, observations;
+        QDate expirationDate, startDate;
+
+        name =query.value(VertSys::name).toString();
+        phone = query.value(VertSys::phone).toString();
+        address = query.value(VertSys::address).toString();
+        email = query.value(VertSys::email).toString();
+        expirationDate = query.value(VertSys::expirationDate).toDate();
+        startDate = query.value(VertSys::startDate).toDate();
+        status = query.value(VertSys::status).toString();
+        observations = query.value(VertSys::observations).toString();
+
+        Climber *c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations);
+        return c;
     }
 }

@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(this, SIGNAL(exportEmails()),
         ui->tabWidget, SLOT(exportClimbersEmails()), Qt::UniqueConnection);
+
+    connect(this, SIGNAL(getClimberByEmail(QString)),
+        ui->tabWidget, SLOT(getClimberByEmail(QString)), Qt::UniqueConnection);
 }
 
 MainWindow::~MainWindow()
@@ -88,8 +91,8 @@ void MainWindow::on_actionPay_Climber_triggered()
 {
     payment = new PaymentWindow(this);
 
-    connect(this, SIGNAL(updateClimberInfo(Climber *&)),
-            payment, SLOT(updateClimberInfo(Climber *&)), Qt::UniqueConnection);
+    connect(this, SIGNAL(updateClimberInfo(Climber *&, bool)),
+            payment, SLOT(updateClimberInfo(Climber *&, bool)), Qt::UniqueConnection);
 
     connect(payment, SIGNAL(setPayment(QDate, double)),
             ui->tabWidget, SLOT(setPayment(QDate, double)), Qt::UniqueConnection);
@@ -98,9 +101,23 @@ void MainWindow::on_actionPay_Climber_triggered()
     payment->show();
 }
 
+void MainWindow::setPaymentNewClimber(Climber *&c)
+{
+    payment = new PaymentWindow(this);
+
+    connect(this, SIGNAL(updateClimberInfo(Climber *&, bool)),
+            payment, SLOT(updateClimberInfo(Climber *&, bool)), Qt::UniqueConnection);
+
+    connect(payment, SIGNAL(setPaymentByEmail(QDate, double, QString)),
+            ui->tabWidget, SLOT(setPaymentByEmail(QDate, double, QString)), Qt::UniqueConnection);
+
+    emit updateClimberInfo(c, true);
+    payment->show();
+}
+
 void MainWindow::recvClimberInfo(Climber *&climber)
 {
-    emit updateClimberInfo(climber);
+    emit updateClimberInfo(climber, false);
 }
 
 void MainWindow::updateActivateOption(int idx)
@@ -171,6 +188,7 @@ void MainWindow::on_actionImport_triggered()
     msgBox.exec();
 }
 
+// FIXME: When remove a climber don't remove his payment information
 void MainWindow::on_actionMake_Report_triggered()
 {
     report = new ReportWindow(this);
