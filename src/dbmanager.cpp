@@ -30,30 +30,29 @@ bool DBManager::openDB()
     else
     {
         status = db.open();
-        QSqlQuery query(db);
         //Check if db is not v1
         if (!db.tables().contains("payment"))
         {
             qDebug() << "Updating to DB v1" << endl;
+            QSqlQuery query(db);
             query.exec("CREATE TABLE payment (id INTEGER PRIMARY KEY, email TEXT, paymentDate DATE, expirationDate DATE, value NUMERIC, FOREIGN KEY(email) REFERENCES climber(email))");
         }
         //Check if db is not v2
         if (db.record("climber").indexOf("observations") == -1)
         {
             qDebug() << "Updating to DB v2" << endl;
+            QSqlQuery query(db);
             query.exec("ALTER TABLE climber ADD COLUMN observations TEXT");
         }
         //Check if db is not v3
         if (!db.tables().contains("package"))
         {
             qDebug() << "Updating to DB v3" << endl;
+            db.transaction();
+            QSqlQuery query(db);
             query.exec("CREATE TABLE package (id INTEGER PRIMARY KEY, name UNIQUE TEXT, days NUMERIC, validity DATE, details TEXT)");
-        }
-        //Check if db is not v4
-        if (db.record("climber").indexOf("packageName") == -1)
-        {
-            qDebug() << "Updating to DB v4" << endl;
             query.exec("ALTER TABLE climber ADD COLUMN packageName TEXT REFERENCES package(name)");
+            db.commit();
         }
     }
     return status;
