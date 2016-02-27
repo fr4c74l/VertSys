@@ -16,8 +16,17 @@ bool PackagesModel::insertPackage(Package &package, bool isNew)
     rec.setValue("days", package.getNumberOfDays());
     rec.setValue("validity", package.getExpirationDate());
     rec.setValue("details", package.getDetails());
+
     bool ret = insertRecord(-1, rec);
     qDebug() << "Package inserted: " << package.getName() << endl;
+    submitAll();
+
+    return ret;
+}
+
+bool PackagesModel::removePackage(int row)
+{
+    bool ret = removeRows(row, 1);
     submitAll();
     return ret;
 }
