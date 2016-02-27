@@ -33,6 +33,7 @@ void RegisterUser::on_buttonBox_rejected()
     delete this;
 }
 
+
 void RegisterUser::on_buttonBox_accepted()
 {
     QString name, phone, address, email, status, observations, package;

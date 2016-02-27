@@ -247,9 +247,9 @@ void TabWidget::setPackage(QString name, int days, QDate validity, QString detai
     bool ret = packagesModel->insertPackage(package, isNew);
     if(ret)
     {
-        QTableView *temp = static_cast<QTableView*>(currentWidget());
-        emit updateActivateOption(currentIndex());
-        temp->setCurrentIndex(QModelIndex());
+        //QTableView *temp = static_cast<QTableView*>(currentWidget());
+        //emit updateActivateOption(currentIndex());
+        //temp->setCurrentIndex(QModelIndex());
 
         // Connect each tab with editPackage
         //connect(currentWidget(),SIGNAL(doubleClicked(const QModelIndex&)),

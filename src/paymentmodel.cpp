@@ -5,7 +5,7 @@
 PaymentModel::PaymentModel(QObject *parent) :
     QSqlRelationalTableModel(parent)
 {
-    setEditStrategy(QSqlTableModel::OnRowChange);
+    setEditStrategy(QSqlTableModel::OnFieldChange);
 }
 
 bool PaymentModel::insertPayment(Payment &payment)
