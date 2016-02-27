@@ -14,13 +14,13 @@ class Package
 {
     QString name;
     int days;
-    QDate validity;
+    int validity;
     QString details;
 
 public:
-    Package(QString name, int days, QDate validity, QString details);
+    Package(QString name, int days, int validity, QString details);
     inline QString getName() {return name;}
     inline int getNumberOfDays() {return days;}
-    inline QDate getExpirationDate() { return validity;}
+    inline int getPackageValidity() { return validity;}
     inline QString getDetails() {return details;}
 };

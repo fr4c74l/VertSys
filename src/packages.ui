@@ -69,22 +69,19 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="packageDays"/>
+      <widget class="QSpinBox" name="packageDays">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Validade:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QDateEdit" name="packageValidity">
-       <property name="frame">
-        <bool>true</bool>
-       </property>
-       <property name="calendarPopup">
-        <bool>true</bool>
+        <string>Validade (em dias):</string>
        </property>
       </widget>
      </item>
@@ -97,6 +94,16 @@
      </item>
      <item row="3" column="1">
       <widget class="QPlainTextEdit" name="packageDetails"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="packageValidity">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

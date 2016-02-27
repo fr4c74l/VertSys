@@ -19,7 +19,7 @@ public:
     ~PackagesWindow();
 
 signals:
-    void setPackage(QString name, int days, QDate validity, QString details, bool isNew);
+    void setPackage(QString name, int days, int validity, QString details, bool isNew);
 
 public slots:
 

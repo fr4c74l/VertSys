@@ -40,7 +40,7 @@ public slots:
     void setPaymentByEmail(QDate date, double value, QString email);
     void showSetPayment(QDate expirationDate, double value, Climber *&c, int row);
     void exportClimbersEmails();
-    void setPackage(QString name, int days, QDate validity, QString details, bool isNew);
+    void setPackage(QString name, int days, int validity, QString details, bool isNew);
     Climber *getClimberByEmail(QString email);
 
 private:

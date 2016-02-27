@@ -271,7 +271,7 @@ void TabWidget::exportClimbersEmails()
     }
 }
 
-void TabWidget::setPackage(QString name, int days, QDate validity, QString details, bool isNew)
+void TabWidget::setPackage(QString name, int days, int validity, QString details, bool isNew)
 {
     Package package(name,days,validity,details);
     qDebug() << "PACKAGE: " << package.getName() << " INSERTED!";

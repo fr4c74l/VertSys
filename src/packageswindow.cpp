@@ -9,9 +9,9 @@ PackagesWindow::PackagesWindow(QWidget *parent) :
     ui->setupUi(this);
 
     int days = 1;
-    QDate validity = QDate::currentDate();
+    int validity = 1;
 
-    ui->packageValidity->setDate(validity);
+    ui->packageValidity->setMinimum(1);
     ui->packageDays->setMinimum(1);
 }
 
@@ -23,15 +23,23 @@ PackagesWindow::~PackagesWindow()
 void PackagesWindow::on_buttonBox_accepted()
 {
     QString name, details;
-    QDate validity;
-    int days;
+    int days, validity;;
 
     name = ui->packageName->text();
     days = ui->packageDays->value();
     details = ui->packageDetails->toPlainText();
-    validity = ui->packageValidity->date();
+    validity = ui->packageValidity->value();
 
-    emit setPackage(name, days, validity, details, true);
-
+    if (name == "")
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("O pacote precisa de um nome!");
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+    } else {
+        emit setPackage(name, days, validity, details, true);
+    }
     delete this;
 }

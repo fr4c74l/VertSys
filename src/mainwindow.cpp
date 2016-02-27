@@ -204,8 +204,8 @@ void MainWindow::on_actionPackages_triggered()
 {
     packages = new PackagesWindow(this);
 
-    connect(packages, SIGNAL(setPackage(QString, int, QDate, QString,bool)),
-            ui->tabWidget, SLOT(setPackage(QString, int, QDate, QString,bool)), Qt::UniqueConnection);
+    connect(packages, SIGNAL(setPackage(QString, int, int, QString,bool)),
+            ui->tabWidget, SLOT(setPackage(QString, int, int, QString,bool)), Qt::UniqueConnection);
 
     packages->show();
 }

@@ -14,7 +14,7 @@ bool PackagesModel::insertPackage(Package &package, bool isNew)
     QSqlRecord rec = record();
     rec.setValue("name", package.getName());
     rec.setValue("days", package.getNumberOfDays());
-    rec.setValue("validity", package.getExpirationDate());
+    rec.setValue("validity", package.getPackageValidity());
     rec.setValue("details", package.getDetails());
 
     bool ret = insertRecord(-1, rec);

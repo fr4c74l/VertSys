@@ -1,6 +1,6 @@
 #include "package.h"
 
-Package::Package(QString name, int days, QDate validity, QString details)
+Package::Package(QString name, int days, int validity, QString details)
 {
     this->name = name;
     this->days = days;
