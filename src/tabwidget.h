@@ -10,6 +10,7 @@
 
 #include "climbermodel.h"
 #include "paymentmodel.h"
+#include "packagesmodel.h"
 #include "climber.h"
 #include "vertsys.h"
 #include "registeruser.h"
@@ -36,12 +37,14 @@ public slots:
     void updateClimberInfo();
     void setPayment(QDate date, double value);
     void exportClimbersEmails();
+    void setPackage(QString name, int days, QDate validity, QString details, bool isNew);
 
 private:
     void setupTabs();
     void setupModel();
     ClimberModel *climberModel;
     PaymentModel *paymentModel;
+    PackagesModel *packagesModel;
     QTableView *tableView;
     QSortFilterProxyModel *proxyTextModel;
     QSortFilterProxyModel *proxyModel;

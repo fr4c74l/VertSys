@@ -33,4 +33,5 @@ private:
     const PhoneValidator *phoneValidator;
     const EmailValidator *emailValidator;
     int rowEdited;
+    Climber *currentClimber;
 };

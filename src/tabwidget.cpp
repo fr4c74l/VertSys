@@ -1,6 +1,7 @@
 #include "tabwidget.h"
 #include "mainwindow.h"
 #include "payment.h"
+#include "package.h"
 #include "registeruser.h"
 
 TabWidget::TabWidget(QWidget *parent) :
@@ -33,6 +34,7 @@ void TabWidget::setupModel()
     climberModel->setHeaderData(VertSys::phone, Qt::Horizontal, QObject::tr("Telefone"));
     climberModel->setHeaderData(VertSys::email, Qt::Horizontal, QObject::tr("Email"));
     climberModel->setHeaderData(VertSys::expirationDate, Qt::Horizontal, QObject::tr("Vencimento"));
+    climberModel->setHeaderData(VertSys::packageName, Qt::Horizontal, QObject::tr("Pacote"));
 
     proxyTextModel = new QSortFilterProxyModel(this);
     proxyTextModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -40,6 +42,13 @@ void TabWidget::setupModel()
 
     paymentModel = new PaymentModel(this);
     paymentModel->setTable("payment");
+
+    packagesModel = new PackagesModel(this);
+    packagesModel->setTable("package");
+    packagesModel->setHeaderData(PackageFields::name, Qt::Horizontal, QObject::tr("Nome"));
+    packagesModel->setHeaderData(PackageFields::days, Qt::Horizontal, QObject::tr("Dias"));
+    packagesModel->setHeaderData(PackageFields::validity, Qt::Horizontal, QObject::tr("Validade"));
+
 }
 
 void TabWidget::setupTabs()
@@ -83,6 +92,36 @@ void TabWidget::setupTabs()
         proxyModel->sort(VertSys::expirationDate, Qt::AscendingOrder);
         addTab(tableView, str);
     }
+    QString str = tr("Pacotistas");
+
+    proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(packagesModel);
+    proxyModel->setDynamicSortFilter(true);
+
+    QTableView *tableView = new QTableView;
+
+    tableView->setModel(proxyModel);
+    tableView->setSortingEnabled(true);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->horizontalHeader()->setStretchLastSection(true);
+    tableView->setAlternatingRowColors(true);
+    tableView->setSortingEnabled(true);
+    tableView->verticalHeader()->hide();
+    tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    tableView->hideColumn(0);
+    tableView->hideColumn(PackageFields::details);
+
+    //Connect the select to disable buttons
+    QItemSelectionModel *sm = tableView->selectionModel();
+    connect(sm, SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+            parentWidget()->parentWidget(), SLOT(rowSelected(QModelIndex,QModelIndex)), Qt::UniqueConnection);
+
+    //proxyModel->setFilterRegExp(QRegExp(charNames[i], Qt::CaseInsensitive));
+    //proxyModel->setFilterKeyColumn(PackageFields::days);
+    //proxyModel->sort(PackageFields::days, Qt::AscendingOrder);
+    addTab(tableView, str);
 }
 
 void TabWidget::updateFilter(QString str)
@@ -200,3 +239,24 @@ void TabWidget::exportClimbersEmails()
         file.close();
     }
 }
+
+void TabWidget::setPackage(QString name, int days, QDate validity, QString details, bool isNew)
+{
+    Package package(name,days,validity,details);
+    qDebug() << "PACKAGE: " << package.getName() << " INSERTED!";
+    bool ret = packagesModel->insertPackage(package, isNew);
+    if(ret)
+    {
+        QTableView *temp = static_cast<QTableView*>(currentWidget());
+        emit updateActivateOption(currentIndex());
+        temp->setCurrentIndex(QModelIndex());
+
+        // Connect each tab with editPackage
+        //connect(currentWidget(),SIGNAL(doubleClicked(const QModelIndex&)),
+        //        this, SLOT(editClimber(const QModelIndex&)), Qt::UniqueConnection);
+
+    }
+    else
+        qDebug() << packagesModel->lastError().text();
+}
+

@@ -181,3 +181,13 @@ void MainWindow::on_actionExportEmail_triggered()
 {
     emit exportEmails();
 }
+
+void MainWindow::on_actionPackages_triggered()
+{
+    packages = new PackagesWindow(this);
+
+    connect(packages, SIGNAL(setPackage(name,days,validity,details,bool)),
+            ui->tabWidget, SLOT(setPackage(name,days,validity,details,bool)), Qt::UniqueConnection);
+
+    packages->show();
+}

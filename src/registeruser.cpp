@@ -7,7 +7,8 @@ RegisterUser::RegisterUser(QWidget *parent) :
     ui(new Ui::RegisterUser)
 {
     ui->setupUi(this);
-    ui->dateEdit->setDate(QDate::currentDate());
+    //ui->dateEdit->setDate(QDate::currentDate());
+    ui->comboBox_package->currentText();
     ui->dateEdit_Start->setDate(QDate::currentDate());
 
     phoneValidator = new PhoneValidator();
@@ -34,7 +35,7 @@ void RegisterUser::on_buttonBox_rejected()
 
 void RegisterUser::on_buttonBox_accepted()
 {
-    QString name, phone, address, email, status, observations;
+    QString name, phone, address, email, status, observations, package;
     QDate expirationDate, startDate;
     email = ui->lineEdit_Email->text();
     //Validate Email
@@ -66,14 +67,20 @@ void RegisterUser::on_buttonBox_accepted()
             address = ui->lineEdit_Addr->text();
             observations = ui->observationsTextEdit->toPlainText();
 
-            expirationDate = ui->dateEdit->date();
+            //expirationDate = ui->dateEdit->date();
+            //TODO add combo_box-package
             startDate = ui->dateEdit_Start->date();
             int comboIdx = ui->comboBox->currentIndex();
             if (!comboIdx)
                 status = "A";
             else
                 status = "D";
-            Climber *c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations);
+            int hasPackage = ui->comboBox_package->currentIndex();
+            if(!hasPackage)
+                package = "teste";
+            else
+                package = "";
+            Climber *c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations, package);
             emit insertClimber(c);
             delete this;
         }

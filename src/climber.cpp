@@ -4,7 +4,7 @@ Climber::Climber()
 {
 }
 
-Climber::Climber(QString &name, QString &phone, QString &address, QString &email, QDate &expirationDate, QDate &startDate, QString &status, QString &observations)
+Climber::Climber(QString &name, QString &phone, QString &address, QString &email, QDate &expirationDate, QDate &startDate, QString &status, QString &observations, QString &package)
 {
     this->name = name;
     this->phone = phone;
@@ -14,4 +14,5 @@ Climber::Climber(QString &name, QString &phone, QString &address, QString &email
     this->startDate = startDate;
     this->status = status;
     this->observations = observations;
+    this->package = package;
 }

@@ -27,7 +27,10 @@ SOURCES += main.cpp \
     edituser.cpp \
     reportwindow.cpp \
     datesortfilterproxymodel.cpp \
-    dateformatdelegate.cpp
+    dateformatdelegate.cpp \
+    packagesmodel.cpp \
+    packageswindow.cpp \
+    package.cpp
 
 HEADERS  += mainwindow.h \
     registeruser.h \
@@ -44,15 +47,21 @@ HEADERS  += mainwindow.h \
     edituser.h \
     reportwindow.h \
     datesortfilterproxymodel.h \
-    dateformatdelegate.h
+    dateformatdelegate.h \
+    packagesmodel.h \
+    packageswindow.h \
+    package.h
 
 FORMS    += mainwindow.ui \
     registeruser.ui \
     payment.ui \
     edituser.ui \
-    report.ui
+    report.ui \
+    packages.ui
 
 RESOURCES += \
     icons.qrc
 
 OTHER_FILES +=
+
+DISTFILES +=

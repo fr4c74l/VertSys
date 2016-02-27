@@ -15,6 +15,7 @@ EditUser::EditUser(int row, Climber*& climber, QWidget *parent) :
     emailValidator = new EmailValidator();
 
     rowEdited = row;
+    currentClimber = climber;
 
     ui->lineEdit_Phone->setValidator(phoneValidator);
     ui->lineEdit_Email->setValidator(emailValidator);
@@ -31,6 +32,8 @@ EditUser::EditUser(int row, Climber*& climber, QWidget *parent) :
         ui->comboBox->setCurrentIndex(0);
     else
         ui->comboBox->setCurrentIndex(1);
+
+    //set ui package
 
     connect(this, SIGNAL(editClimber(int, Climber*&)),
             static_cast<QMainWindow*>(parent), SLOT(editClimber(int, Climber*&)), Qt::UniqueConnection);
@@ -52,8 +55,9 @@ void EditUser::on_buttonBox_rejected()
 //FIXME: Don't repeat yourself
 void EditUser::on_buttonBox_accepted()
 {
-    QString name, phone, address, email, status, observations;
+    QString name, phone, address, email, status, observations, package;
     QDate expirationDate, startDate;
+
     email = ui->lineEdit_Email->text();
     //Validate Email
     if (!EmailValidator::isValid(email))
@@ -85,13 +89,23 @@ void EditUser::on_buttonBox_accepted()
             observations = ui->observationsTextEdit->toPlainText();
 
             expirationDate = ui->dateEdit->date();
+            //expirationDate = currentClimber->getExpirationDate();
             startDate = ui->dateEdit_Start->date();
             int comboIdx = ui->comboBox->currentIndex();
             if (!comboIdx)
                 status = "A";
             else
                 status = "D";
-            Climber *c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations);
+
+            qDebug() << currentClimber->getExpirationDate().toString();
+
+            int hasPackage = ui->comboBox_package->currentIndex();
+            if(!hasPackage)
+                package = "teste";
+            else
+                package = currentClimber->getExpirationDate().toString();
+
+            Climber *c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations, package);
             emit editClimber(rowEdited, c);
             delete this;
         }

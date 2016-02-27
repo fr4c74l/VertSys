@@ -4,12 +4,12 @@
 class Climber
 {
 private:
-    QString name, phone, address, email, status, observations;
+    QString name, phone, address, email, status, observations, package;
     QDate expirationDate, startDate;
 
 public:
     Climber();
-    Climber(QString &name, QString &phone, QString &address, QString &email, QDate &expirationDate, QDate &startDate, QString &status, QString &observations);
+    Climber(QString &name, QString &phone, QString &address, QString &email, QDate &expirationDate, QDate &startDate, QString &status, QString &observations, QString &package);
     inline QString getName() {return name;}
     inline QString getPhone() {return phone;}
     inline QString getAddress() {return address;}
@@ -18,4 +18,5 @@ public:
     inline QDate getStartDate() {return startDate;}
     inline QString getStatus() {return status;}
     inline QString getObservations() {return observations;}
+    inline QString getPackage() {return package;}
 };

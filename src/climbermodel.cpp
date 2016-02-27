@@ -47,6 +47,7 @@ bool ClimberModel::insertClimber(Climber *&climber)
     rec.setValue("startDate", climber->getStartDate());
     rec.setValue("status", climber->getStatus());
     rec.setValue("observations", climber->getObservations());
+    rec.setValue("pacote",climber->getPackage());
 
     bool ret = insertRecord(-1, rec);
     submitAll();
@@ -90,7 +91,7 @@ bool ClimberModel::updateExpirationDate(int row, QDate date)
 
 Climber *& ClimberModel::getClimber(int row)
 {
-    QString name, phone, address, email, status, observations;
+    QString name, phone, address, email, status, observations, package;
     QDate expirationDate, startDate;
 
     name = index(row, VertSys::name).data().toString();
@@ -101,7 +102,8 @@ Climber *& ClimberModel::getClimber(int row)
     startDate = index(row, VertSys::startDate).data().toDate();
     status = index(row, VertSys::status).data().toString();
     observations = index(row, VertSys::observations).data().toString();
+    package = index(row, VertSys::packageName).data().toString();
 
-    c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations);
+    c = new Climber(name, phone, address, email, expirationDate, startDate, status, observations, package);
     return c;
 }

@@ -10,4 +10,5 @@ namespace VertSys
     const int startDate = 5;
     const int status = 6;
     const int observations = 7;
+    const int packageName = 8;
 }

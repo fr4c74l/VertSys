@@ -101,6 +101,7 @@
    <addaction name="actionRemove_Climber"/>
    <addaction name="actionPay_Climber"/>
    <addaction name="actionMake_Report"/>
+   <addaction name="actionPackages"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_Climber">
@@ -168,6 +169,18 @@
   <action name="actionExportEmail">
    <property name="text">
     <string>Exportar</string>
+   </property>
+  </action>
+  <action name="actionPackages">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../box.png</normaloff>../../box.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pacotes</string>
+   </property>
+   <property name="toolTip">
+    <string>Pacotes</string>
    </property>
   </action>
  </widget>
