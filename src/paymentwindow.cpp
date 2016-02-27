@@ -15,9 +15,12 @@ PaymentWindow::~PaymentWindow()
     delete ui;
 }
 
-void PaymentWindow::updateClimberInfo(Climber *&climber)
+void PaymentWindow::updateClimberInfo(Climber *&climber, bool isNewClimber)
 {
+    //TODO: get climber row here?
     name = climber->getName();
+    email = climber->getEmail();
+    isNew = isNewClimber;
     expirationDate = climber->getExpirationDate();
     ui->calendarWidget->setSelectedDate(expirationDate);
     ui->calendarWidget->setMaximumDate(expirationDate.addYears(1));
@@ -25,7 +28,11 @@ void PaymentWindow::updateClimberInfo(Climber *&climber)
 
 void PaymentWindow::on_buttonBox_accepted()
 {
-    emit setPayment(ui->calendarWidget->selectedDate(), ui->valueSpin->value());
+    qDebug() << "Make payment to: " << email << " and isNew: " << isNew << endl;
+    if (isNew)
+        emit setPaymentByEmail(ui->calendarWidget->selectedDate(), ui->valueSpin->value(), email);
+    else
+        emit setPayment(ui->calendarWidget->selectedDate(), ui->valueSpin->value());
     delete this;
 }
 

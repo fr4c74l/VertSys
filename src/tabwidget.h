@@ -25,6 +25,7 @@ signals:
     void updateClimberInfo(Climber *&climber);
     void updateActivateOption(int);
     void editClimberWindow(int, Climber*);
+    void setPaymentNewClimber(Climber *&);
 
 public slots:
     void updateFilter(QString str);
@@ -36,8 +37,11 @@ public slots:
     void toggleActivity();
     void updateClimberInfo();
     void setPayment(QDate date, double value);
+    void setPaymentByEmail(QDate date, double value, QString email);
+    void showSetPayment(QDate expirationDate, double value, Climber *&c, int row);
     void exportClimbersEmails();
     void setPackage(QString name, int days, QDate validity, QString details, bool isNew);
+    Climber *getClimberByEmail(QString email);
 
 private:
     void setupTabs();
