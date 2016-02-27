@@ -51,7 +51,8 @@ bool DBManager::openDB()
             db.transaction();
             QSqlQuery query(db);
             query.exec("CREATE TABLE package (id INTEGER PRIMARY KEY, name UNIQUE TEXT, days NUMERIC, validity DATE, details TEXT)");
-            query.exec("ALTER TABLE climber ADD COLUMN packageName TEXT REFERENCES package(name)");
+            query.exec("CREATE TABLE climber_package (id INTEGER PRIMARY KEY, package INTEGER, climber VARCHAR(50), days_spent INTEGER, purchase_date DATE,"
+                       " FOREIGN KEY(climber) REFERENCES climber(email), FOREIGN KEY(package) REFERENCES package(id))");
             db.commit();
         }
     }
